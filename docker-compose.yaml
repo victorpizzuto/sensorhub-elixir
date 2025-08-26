@@ -1,0 +1,94 @@
+services:
+
+  postgres:
+    image: postgres:alpine
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - dns_net
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "15672:15672"
+      - "15675:15675"
+      - "1883:1883"
+      - "9001:9001"
+      - "15692:15692"
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+    volumes:
+      - ./docker_config/rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins:ro
+      - ./docker_config/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+    networks:
+      - dns_net
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    depends_on:
+      - postgres
+    ports:
+      - 3000:3000
+    volumes:
+      - ./docker_config/grafana:/etc/grafana/provisioning:ro
+    environment:
+      GF_SECURITY_ADMIN_USER: username
+      GF_SECURITY_ADMIN_PASSWORD: password
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_AUTH_BASIC_ENABLED: "true"
+      GF_AUTH_GENERIC_OAUTH_ENABLED: "false"
+      GF_AUTH_PROXY_ENABLED: "false"
+      GF_AUTH_LDAP_ENABLED: "false"
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f localhost:3000/api/health && echo 'ready'" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - dns_net
+
+  minio:
+    image: bitnami/minio
+    container_name: minio
+    ports:
+      - 9000:9000
+      - 9002:9002
+    environment:
+      MINIO_ROOT_USER: user
+      MINIO_ROOT_PASSWORD: password
+      MINIO_SERVER_HOST: localhost
+      MINIO_SCHEME: http
+      MINIO_API_CORS_ALLOW_ORIGIN: '*'
+
+  mongodb:
+    image: mongo:8
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    networks:
+      - dns_net
+
+  nodered:
+    image: nodered/node-red-docker:v8
+    network_mode: host
+    ports:
+      - "1880:1880"
+
+networks:
+  dns_net:
+    driver: bridge
