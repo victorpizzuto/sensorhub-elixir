@@ -106,4 +106,18 @@ if config_env() == :prod do
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
 
   config :sensorhub_elixir, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
+
+  config :libcluster,
+    topologies: [
+      dns_example: [
+        strategy: Cluster.Strategy.DNSPoll,
+        config: [
+          # Poll DNS every 5 seconds
+          polling_interval: 5_000,
+          # DNS query matches Docker Compose service name
+          query: "cluster",
+          node_basename: "sensorhub_elixir"
+        ]
+      ]
+    ]
 end

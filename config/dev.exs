@@ -85,3 +85,20 @@ config :swoosh, :api_client, false
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
+
+config :libcluster,
+  topologies: [
+    local_epmd: [
+      strategy: Cluster.Strategy.LocalEpmd
+    ]
+  ]
+
+config :sensorhub_elixir_timeseries, :timeseries,
+  db_path: "mongodb://username:password@localhost:27017"
+
+config :sensorhub_elixir_mqtt, :mqtt,
+  host: "localhost",
+  port: 5672,
+  username: "username",
+  password: "password",
+  virtual_host: "/"
