@@ -47,4 +47,13 @@ defmodule SensorhubElixir.Umbrella.MixProject do
       setup: ["cmd mix setup"]
     ]
   end
+
+  def application do
+    [
+      mod: {SensorhubElixir.Application, []},
+      extra_applications:
+        [:logger, :runtime_tools, :os_mon] ++
+          if(Mix.env() == :dev, do: [:wx, :observer], else: [])
+    ]
+  end
 end
