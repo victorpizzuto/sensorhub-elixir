@@ -1,4 +1,4 @@
-defmodule SensorhubElixirCluster.Listener do
+defmodule SensorhubElixirCluster.HordeListener do
   @moduledoc false
 
   use GenServer

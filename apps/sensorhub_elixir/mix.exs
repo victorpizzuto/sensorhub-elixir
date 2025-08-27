@@ -42,7 +42,14 @@ defmodule SensorhubElixir.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:jason, "~> 1.2"},
       {:swoosh, "~> 1.16"},
-      {:req, "~> 0.5"}
+      {:req, "~> 0.5"},
+      {:connection, "~> 1.1"},
+      {:mongodb_driver, "~> 1.5.0"},
+      {:ex_aws, "~> 2.5"},
+      {:ex_aws_s3, "~> 2.5"},
+      {:broadway, "~> 1.2"},
+      {:broadway_rabbitmq, "~> 0.8.2"},
+      {:sensorhub_elixir_cluster, in_umbrella: true}
     ]
   end
 

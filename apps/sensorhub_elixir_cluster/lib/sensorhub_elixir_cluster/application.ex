@@ -11,9 +11,9 @@ defmodule SensorhubElixirCluster.Application do
          Application.get_env(:libcluster, :topologies),
          [name: SensorhubElixirCluster.ClusterSupervisor]
        ]},
-      SensorhubElixirCluster.Supervisor,
-      SensorhubElixirCluster.Registry,
-      SensorhubElixirCluster.Listener
+      SensorhubElixirCluster.HordeSupervisor,
+      SensorhubElixirCluster.HordeRegistry,
+      SensorhubElixirCluster.HordeListener
     ]
 
     opts = [strategy: :one_for_one, name: SensorhubElixirCluster.Supervisor]

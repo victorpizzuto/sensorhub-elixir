@@ -15,4 +15,8 @@ defmodule SensorhubElixirCluster do
   def hello do
     :world
   end
+
+  def via(name) do
+    {:via, Horde.Registry, {SensorhubElixirCluster.HordeRegistry, name}}
+  end
 end

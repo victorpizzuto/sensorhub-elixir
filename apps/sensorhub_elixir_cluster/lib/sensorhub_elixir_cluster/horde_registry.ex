@@ -1,4 +1,4 @@
-defmodule SensorhubElixirCluster.Registry do
+defmodule SensorhubElixirCluster.HordeRegistry do
   @moduledoc false
 
   use Horde.Registry

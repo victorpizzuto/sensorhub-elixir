@@ -1,4 +1,4 @@
-defmodule SensorhubElixirCluster.Supervisor do
+defmodule SensorhubElixirCluster.HordeSupervisor do
   @moduledoc false
   use Horde.DynamicSupervisor
 

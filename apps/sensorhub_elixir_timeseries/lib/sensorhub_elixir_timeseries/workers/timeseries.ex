@@ -34,6 +34,7 @@ defmodule SensorhubElixirTimeseries.Workers.Timeseries do
       {:ok, conn} ->
         Logger.info("Timeseries connected.")
         Process.monitor(conn)
+        ensure_indexes(conn)
         {:ok, %{state | conn: conn}}
 
       {:error, reason} ->
@@ -59,7 +60,7 @@ defmodule SensorhubElixirTimeseries.Workers.Timeseries do
   def handle_call({:write, collection, document}, _from, state) do
     case Mongo.insert_one(state.conn, collection, document) do
       {:ok, result} ->
-        {:reply, result, state}
+        {:reply, {:ok, result}, state}
 
       {:error, reason} ->
         Logger.error("Can't insert in Timeseries: #{inspect(reason)}")
@@ -79,5 +80,14 @@ defmodule SensorhubElixirTimeseries.Workers.Timeseries do
 
   def read(collection, query) do
     GenServer.call(SensorhubElixirCluster.via("timeseries"), {:read, collection, query})
+  end
+
+  defp ensure_indexes(conn) do
+    indexes = [
+      [key: [uuid: 1], name: "uuid_index"],
+      [key: [time: -1], name: "time_index"]
+    ]
+
+    Mongo.create_indexes(conn, "telemetry", indexes)
   end
 end

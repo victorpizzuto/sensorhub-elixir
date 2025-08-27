@@ -14,7 +14,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - dns_net
+      - dns
 
   rabbitmq:
     image: rabbitmq:management
@@ -25,14 +25,16 @@ services:
       - "1883:1883"
       - "9001:9001"
       - "15692:15692"
+      - "5672:5672"
     environment:
-      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_USER=username
       - RABBITMQ_DEFAULT_PASS=password
     volumes:
       - ./docker_config/rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins:ro
       - ./docker_config/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./docker_config/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
     networks:
-      - dns_net
+      - dns
 
   grafana:
     image: grafana/grafana:latest
@@ -57,7 +59,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - dns_net
+      - dns
 
   minio:
     image: bitnami/minio
@@ -66,7 +68,7 @@ services:
       - 9000:9000
       - 9002:9002
     environment:
-      MINIO_ROOT_USER: user
+      MINIO_ROOT_USER: username
       MINIO_ROOT_PASSWORD: password
       MINIO_SERVER_HOST: localhost
       MINIO_SCHEME: http
@@ -78,17 +80,20 @@ services:
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_ROOT_USERNAME: username
+      MONGO_INITDB_ROOT_PASSWORD: password
     networks:
-      - dns_net
+      - dns
 
   nodered:
     image: nodered/node-red-docker:v8
-    network_mode: host
     ports:
       - "1880:1880"
+    volumes:
+      - ./docker_config/nodered/data:/data
+    networks:
+      - dns
 
 networks:
-  dns_net:
+  dns:
     driver: bridge
