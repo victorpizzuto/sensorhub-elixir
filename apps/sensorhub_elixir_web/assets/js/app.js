@@ -55,7 +55,7 @@ const Hooks = {
 
       const option = {
         title: {
-          text: isVelocity ? 'Velocidade dos Sensores' : 'Temperatura dos Sensores',
+          text: isVelocity ? 'Speed Data' : 'Temperature Data',
           left: 'center',
           textStyle: { fontSize: 16 }
         },
@@ -78,7 +78,7 @@ const Hooks = {
         },
         yAxis: {
           type: 'value',
-          name: isVelocity ? 'Velocidade (km/h)' : 'Temperatura (°C)'
+          name: isVelocity ? 'Speed (km/h)' : 'Temperature (°C)'
         },
         series: []
       }
@@ -98,7 +98,7 @@ const Hooks = {
 
       const option = {
         title: {
-          text: isVelocity ? 'Velocidade dos Sensores' : 'Temperatura dos Sensores',
+          text: isVelocity ? 'Speed Data' : 'Temperature Data',
           left: 'center',
           textStyle: { fontSize: 16 }
         },
@@ -140,7 +140,7 @@ const Hooks = {
         },
         yAxis: {
           type: 'value',
-          name: isVelocity ? 'Velocidade (km/h)' : 'Temperatura (°C)'
+          name: isVelocity ? 'Speed (km/h)' : 'Temperature (°C)'
         },
         series: data.series.map(serie => ({
           ...serie,

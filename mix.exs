@@ -43,8 +43,11 @@ defmodule SensorhubElixir.Umbrella.MixProject do
   # and cannot be accessed from applications inside the apps/ folder.
   defp aliases do
     [
-      # run `mix setup` in all child apps
-      setup: ["cmd mix setup"]
+      setup: [
+        "deps.get",
+        "cmd --app sensorhub_elixir mix setup",
+        "cmd --app sensorhub_elixir_web mix setup"
+      ]
     ]
   end
 

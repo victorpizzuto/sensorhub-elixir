@@ -102,3 +102,11 @@ config :sensorhub_elixir_mqtt, :mqtt,
   username: "username",
   password: "password",
   virtual_host: "/"
+
+config :ex_aws, :s3,
+  access_key_id: "username",
+  secret_access_key: "password",
+  scheme: "http://",
+  host: "localhost",
+  port: 9000,
+  region: "local"
