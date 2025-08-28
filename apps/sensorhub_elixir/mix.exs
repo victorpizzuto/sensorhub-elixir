@@ -47,9 +47,13 @@ defmodule SensorhubElixir.MixProject do
       {:mongodb_driver, "~> 1.5.0"},
       {:ex_aws, "~> 2.5"},
       {:ex_aws_s3, "~> 2.5"},
+      {:hackney, "~> 1.9"},
       {:broadway, "~> 1.2"},
       {:broadway_rabbitmq, "~> 0.8.2"},
-      {:sensorhub_elixir_cluster, in_umbrella: true}
+      {:oban, "~> 2.20"},
+      {:elixlsx, "~> 0.6.0"},
+      {:sensorhub_elixir_cluster, in_umbrella: true},
+      {:sensorhub_elixir_jobs, in_umbrella: true}
     ]
   end
 
@@ -59,8 +63,7 @@ defmodule SensorhubElixir.MixProject do
   defp aliases do
     [
       setup: ["deps.get", "ecto.setup"],
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run #{__DIR__}/priv/repo/seeds.exs"],
-      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
     ]
   end

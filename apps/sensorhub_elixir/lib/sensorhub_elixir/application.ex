@@ -9,12 +9,16 @@ defmodule SensorhubElixir.Application do
   def start(_type, _args) do
     children = [
       SensorhubElixir.Repo,
+      {Oban, Application.fetch_env!(:sensorhub_elixir, Oban)},
       {DNSCluster, query: Application.get_env(:sensorhub_elixir, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: SensorhubElixir.PubSub}
       # Start a worker by calling: SensorhubElixir.Worker.start_link(arg)
       # {SensorhubElixir.Worker, arg}
     ]
 
-    Supervisor.start_link(children, strategy: :one_for_one, name: SensorhubElixir.Supervisor)
+    Supervisor.start_link(children,
+      strategy: :one_for_one,
+      name: SensorhubElixirCluster.via("repo_supervisor")
+    )
   end
 end
