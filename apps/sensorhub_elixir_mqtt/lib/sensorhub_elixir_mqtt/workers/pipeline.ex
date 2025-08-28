@@ -56,6 +56,14 @@ defmodule SensorhubElixirMqtt.Workers.Pipeline do
     end
   end
 
+  defp broadcast_message(data) do
+    Phoenix.PubSub.broadcast(
+      SensorhubElixir.PubSub,
+      "telemetry:data",
+      {:new_telemetry, data}
+    )
+  end
+
   defp store(sensor_id, data) do
     {:ok, time, _} = DateTime.from_iso8601(data["time"])
 
@@ -66,6 +74,7 @@ defmodule SensorhubElixirMqtt.Workers.Pipeline do
       |> Map.put_new("inserted_at", DateTime.utc_now())
 
     with {:ok, _} <- Timeseries.write("telemetry", data) do
+      broadcast_message(data)
       :ok
     else
       error -> error
