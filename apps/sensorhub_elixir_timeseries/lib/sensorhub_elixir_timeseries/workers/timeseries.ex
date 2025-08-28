@@ -85,7 +85,7 @@ defmodule SensorhubElixirTimeseries.Workers.Timeseries do
   defp ensure_indexes(conn) do
     indexes = [
       [key: [uuid: 1], name: "uuid_index"],
-      [key: [time: -1], name: "time_index"]
+      [key: [inserted_at: -1], name: "inserted_at_index"]
     ]
 
     Mongo.create_indexes(conn, "telemetry", indexes)
