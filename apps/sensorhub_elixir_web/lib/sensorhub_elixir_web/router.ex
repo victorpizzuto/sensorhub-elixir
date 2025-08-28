@@ -17,7 +17,8 @@ defmodule SensorhubElixirWeb.Router do
   scope "/", SensorhubElixirWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", RelatoryLive.Index, :index
+    live "/dashboard", RelatoryLive.Index, :index
   end
 
   # Other scopes may use custom stacks.
